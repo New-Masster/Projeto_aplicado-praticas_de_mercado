@@ -59,7 +59,7 @@ graph TD
 - SSH somente por chave, com autenticação por senha desabilitada.
 - Fail2Ban protegendo SSH com `maxretry=4` e `bantime=86400`.
 - HTTP redirecionado para HTTPS com `301`.
-- Certbot configurado para renovação do certificado, com validação do processo realizada por meio de `certbot renew --dry-run`.
+- Certbot configurado para renovação do certificado, com `sudo certbot renew --dry-run` executado com sucesso para validar o processo. O agendamento automático é realizado pelo timer systemd `snap.certbot.renew.timer`, habilitado (`enabled`) e ativo (`active (waiting)`), acionando o serviço `snap.certbot.renew.service`.
 - OpenSSL 3.5.4 instalado isoladamente em `/opt/openssl-3.5.4`.
 - Nginx 1.28.1 compilado com OpenSSL 3.5.4 em `/opt/nginx-pqc`.
 
@@ -69,9 +69,11 @@ As evidências abaixo documentam os principais controles de segurança implement
 
 ### 1. Certbot e renovação do certificado
 
-A evidência demonstra a instalação e a configuração do Certbot para renovação do certificado Let's Encrypt emitido para o endereço IP público. O comando `certbot renew --dry-run` foi executado com sucesso e valida o processo de renovação, mas não comprova que uma renovação real já ocorreu. O mecanismo de agendamento automático não está documentado como evidência.
+A evidência demonstra a instalação e a configuração do Certbot para renovação do certificado Let's Encrypt emitido para o endereço IP público. O comando `sudo certbot renew --dry-run` foi executado com sucesso e valida o processo de renovação, mas não comprova que uma renovação real já ocorreu. O agendamento automático é comprovado separadamente pelo timer systemd `snap.certbot.renew.timer`, que está habilitado (`enabled`) e ativo (`active (waiting)`), acionando o serviço `snap.certbot.renew.service`.
 
 ![Evidência da configuração do Certbot e da validação de renovação do certificado Let's Encrypt para o IP público](evidencias/certbot-renovacao.png)
+
+![Timer de renovação automática do Certbot](evidencias/certbot-renew-timer.png)
 
 ### 2. Redirecionamento HTTP para HTTPS
 
@@ -109,7 +111,9 @@ Negotiated TLS1.3 group: X25519MLKEM768
 
 ![Evidência da conexão TLS 1.3 com negociação do grupo híbrido X25519MLKEM768](evidencias/tls-pqc-x25519mlkem768.png)
 
-O resultado da Grade A e da indicação de PQC no SSL Labs ainda precisa ser capturado diretamente no relatório do SSL Labs. A consulta automática realizada nesta etapa retornou `400` e não é tratada como evidência.
+A validação externa realizada pelo SSL Labs para `132.226.243.185.nip.io` confirmou o suporte a TLS 1.3 e identificou suporte à troca de chaves pós-quântica (PQC). O relatório apresenta classificação `A` quando os problemas de confiança do certificado são desconsiderados. A classificação global exibida como `T` está relacionada à validação de confiança do certificado no contexto do teste. Portanto, a evidência comprova o suporte técnico a TLS 1.3 e PQC, devendo a ressalva de confiança do certificado ser considerada na interpretação da classificação.
+
+![Relatório SSL Labs com validação de TLS 1.3, PQC e classificação de segurança](evidencias/SSL Report - 132.226.243.185.nip.io - 132.226.243.185.png)
 
 ## CI/CD
 
@@ -176,15 +180,15 @@ As sugestões foram revisadas pelo responsável pelo projeto. Comandos, configur
 | Item | Situação |
 | --- | --- |
 | OCI, Ubuntu, IP público, Nginx e HTTPS | Comprovado |
-| Certbot configurado e renovação validada com `--dry-run` | Comprovado; mecanismo de agendamento automático ainda não documentado |
+| Certbot configurado, renovação validada com `--dry-run` e timer automático ativo | Comprovado |
 | TLS 1.3 e `X25519MLKEM768` | Comprovado |
-| Grade A e indicação PQC no SSL Labs | Pendente de captura |
+| SSL Labs: TLS 1.3, suporte a PQC e classificação A quando problemas de confiança são ignorados | Comprovado com ressalva técnica |
 | GitHub público e GitHub Actions | Comprovado |
 | `.gitignore` e ausência de arquivos sensíveis rastreados | Comprovado |
 | Auditoria de padrões de segredo no histórico | Sem ocorrência concreta encontrada |
 | Login, sessão, dashboard e logout | Comprovado |
 | OWASP A01, A02 e A04 | Comprovado |
-| Evidência de uso de IA/Antigravity ou ferramenta similar | Comprovado no uso do GitHub Copilot no VS Code |
+| Evidência de uso de IA no desenvolvimento | Comprovado no uso do GitHub Copilot no VS Code |
 | 2FA do GitHub | Comprovado |
 
 ---
