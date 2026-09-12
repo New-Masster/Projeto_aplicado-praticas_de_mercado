@@ -53,6 +53,12 @@ jobs:
 
             cd /home/ubuntu/meu-projeto-mvc
 
+            cp /tmp/app.py ./app.py
+            cp /tmp/requirements.txt ./requirements.txt
+            rm -rf ./templates
+            cp -R /tmp/templates ./templates
+            rm -rf /tmp/app.py /tmp/requirements.txt /tmp/templates
+
             sudo install \
               -o root \
               -g root \
