@@ -13,6 +13,12 @@ jobs:
       - name: Obter o código do repositório
         uses: actions/checkout@v4
 
+      - name: Verificar impressão digital do hash
+        env:
+          PASSWORD_HASH: ${{ secrets.APP_ADMIN_PASSWORD_HASH }}
+        run: |
+          printf '%s' "$PASSWORD_HASH" | sha256sum
+
       - name: Enviar arquivos do projeto para a VM
         uses: appleboy/scp-action@v0.1.7
         with:
