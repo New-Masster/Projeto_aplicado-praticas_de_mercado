@@ -29,6 +29,8 @@ jobs:
           FLASK_SECURE_COOKIE=1
           EOF
 
+          chmod 644 meu-projeto.env
+
       - name: Enviar arquivos do projeto para a VM
         uses: appleboy/scp-action@v0.1.7
         with:
