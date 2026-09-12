@@ -3,42 +3,199 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Projeto de Segurança</title>
+    <title>Área Interna - Projeto Aplicado</title>
+    <style>
+        :root {
+            color-scheme: dark;
+            --background: #0b1220;
+            --surface: #111c2e;
+            --surface-light: #17263b;
+            --border: #2a3b54;
+            --text: #edf4ff;
+            --muted: #9eb0c7;
+            --accent: #4dd4ac;
+            --accent-dark: #123d3a;
+            --danger: #ffb4ab;
+            --danger-dark: #482327;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            display: grid;
+            place-items: center;
+            padding: 24px;
+            background: radial-gradient(circle at top, #1a2c46 0, var(--background) 48%);
+            color: var(--text);
+            font-family: "Segoe UI", Tahoma, sans-serif;
+        }
+
+        .login-shell {
+            width: min(100%, 440px);
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 18px;
+            color: var(--muted);
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .brand-mark {
+            width: 38px;
+            height: 38px;
+            display: grid;
+            place-items: center;
+            border: 1px solid #4c708a;
+            border-radius: 12px;
+            background: #19304a;
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+
+        .card {
+            padding: clamp(28px, 6vw, 44px);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            background: linear-gradient(145deg, rgba(23, 38, 59, 0.98), rgba(17, 28, 46, 0.98));
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.32);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(1.8rem, 5vw, 2.25rem);
+            letter-spacing: 0.01em;
+        }
+
+        .subtitle {
+            margin: 10px 0 28px;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        .alert {
+            margin: 0 0 22px;
+            padding: 12px 14px;
+            border: 1px solid #884b51;
+            border-radius: 10px;
+            background: var(--danger-dark);
+            color: var(--danger);
+            line-height: 1.45;
+        }
+
+        .field {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #d8e5f5;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px 14px;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            outline: none;
+            background: #0c1727;
+            color: var(--text);
+            font: inherit;
+            transition: border-color 160ms ease, box-shadow 160ms ease;
+        }
+
+        input:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px rgba(77, 212, 172, 0.16);
+        }
+
+        button {
+            width: 100%;
+            margin-top: 8px;
+            padding: 13px 16px;
+            border: 1px solid var(--accent);
+            border-radius: 10px;
+            background: var(--accent);
+            color: #09211f;
+            cursor: pointer;
+            font: inherit;
+            font-weight: 800;
+            transition: transform 160ms ease, background 160ms ease;
+        }
+
+        button:hover {
+            background: #72e4c1;
+            transform: translateY(-1px);
+        }
+
+        button:focus-visible {
+            outline: 3px solid rgba(77, 212, 172, 0.35);
+            outline-offset: 3px;
+        }
+
+        .footer-note {
+            margin: 18px 0 0;
+            color: var(--muted);
+            font-size: 0.78rem;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
-    <main>
-        <h1>Projeto de Segurança da Informação</h1>
-        <h2>Login</h2>
+    <main class="login-shell">
+        <div class="brand" aria-label="PROJETO APLICADO · SEGURANÇA DA INFORMAÇÃO">
+            <span class="brand-mark" aria-hidden="true">🔐</span>
+            <span>PROJETO APLICADO · SEGURANÇA DA INFORMAÇÃO</span>
+        </div>
 
-        {% if error %}
-            <p role="alert">{{ error }}</p>
-        {% endif %}
+        <section class="card" aria-labelledby="page-title">
+            <h1 id="page-title">Área Interna</h1>
+            <p class="subtitle">Acesso protegido para usuários autorizados.</p>
 
-        <form method="POST" action="{{ url_for('login') }}">
-            <div>
-                <label for="username">Usuário</label>
-                <input
-                    type="text"
-                    id="username"
-                    name="username"
-                    required
-                    autocomplete="username"
-                >
-            </div>
+            {% if error %}
+                <p class="alert" role="alert">{{ error }}</p>
+            {% endif %}
 
-            <div>
-                <label for="password">Senha</label>
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    required
-                    autocomplete="current-password"
-                >
-            </div>
+            <form method="POST" action="{{ url_for('login') }}">
+                <div class="field">
+                    <label for="username">Usuário</label>
+                    <input
+                        type="text"
+                        id="username"
+                        name="username"
+                        required
+                        autocomplete="username"
+                    >
+                </div>
 
-            <button type="submit">Entrar</button>
-        </form>
+                <div class="field">
+                    <label for="password">Senha</label>
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        required
+                        autocomplete="current-password"
+                    >
+                </div>
+
+                <button type="submit">Entrar</button>
+            </form>
+        </section>
+
+        <p class="footer-note">Ambiente protegido · autenticação segura</p>
     </main>
 </body>
 </html>

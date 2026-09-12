@@ -3,22 +3,211 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Área Interna - Projeto de Segurança</title>
+    <title>Área Interna - Projeto Aplicado</title>
+    <style>
+        :root {
+            color-scheme: dark;
+            --background: #0b1220;
+            --surface: #111c2e;
+            --border: #2a3b54;
+            --text: #edf4ff;
+            --muted: #9eb0c7;
+            --accent: #4dd4ac;
+            --accent-dark: #123d3a;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            margin: 0;
+            display: grid;
+            place-items: center;
+            padding: 24px;
+            background: radial-gradient(circle at top, #1a2c46 0, var(--background) 48%);
+            color: var(--text);
+            font-family: "Segoe UI", Tahoma, sans-serif;
+        }
+
+        .dashboard-shell {
+            width: min(100%, 720px);
+        }
+
+        .topline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 18px;
+            color: var(--muted);
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .brand-mark {
+            width: 38px;
+            height: 38px;
+            display: grid;
+            place-items: center;
+            border: 1px solid #4c708a;
+            border-radius: 12px;
+            background: #19304a;
+            color: var(--accent);
+            font-size: 1.2rem;
+        }
+
+        .status {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            padding: 7px 10px;
+            border: 1px solid #286b62;
+            border-radius: 999px;
+            background: var(--accent-dark);
+            color: #9ff1d8;
+            font-size: 0.72rem;
+            letter-spacing: 0.04em;
+            white-space: nowrap;
+        }
+
+        .status::before {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 0 4px rgba(77, 212, 172, 0.14);
+            content: "";
+        }
+
+        .panel {
+            padding: clamp(28px, 6vw, 48px);
+            border: 1px solid var(--border);
+            border-radius: 18px;
+            background: linear-gradient(145deg, rgba(23, 38, 59, 0.98), rgba(17, 28, 46, 0.98));
+            box-shadow: 0 24px 60px rgba(0, 0, 0, 0.32);
+        }
+
+        h1 {
+            margin: 0;
+            font-size: clamp(1.8rem, 5vw, 2.5rem);
+            letter-spacing: 0.01em;
+        }
+
+        .success-message {
+            margin: 12px 0 30px;
+            color: var(--muted);
+            line-height: 1.6;
+        }
+
+        .identity {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 18px;
+            margin-bottom: 30px;
+            padding: 18px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            background: rgba(12, 23, 39, 0.62);
+        }
+
+        .identity-label {
+            display: block;
+            margin-bottom: 6px;
+            color: var(--muted);
+            font-size: 0.78rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .identity strong {
+            font-size: 1.1rem;
+        }
+
+        .identity-icon {
+            width: 42px;
+            height: 42px;
+            display: grid;
+            place-items: center;
+            border-radius: 50%;
+            background: #19304a;
+            color: var(--accent);
+            font-weight: 800;
+        }
+
+        button {
+            width: 100%;
+            padding: 13px 16px;
+            border: 1px solid #52708d;
+            border-radius: 10px;
+            background: #1b3048;
+            color: var(--text);
+            cursor: pointer;
+            font: inherit;
+            font-weight: 800;
+            transition: border-color 160ms ease, background 160ms ease, transform 160ms ease;
+        }
+
+        button:hover {
+            border-color: var(--accent);
+            background: #23435a;
+            transform: translateY(-1px);
+        }
+
+        button:focus-visible {
+            outline: 3px solid rgba(77, 212, 172, 0.35);
+            outline-offset: 3px;
+        }
+
+        @media (max-width: 520px) {
+            .topline,
+            .identity {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .status {
+                align-self: flex-start;
+            }
+        }
+    </style>
 </head>
 <body>
-    <main>
-        <h1>Área Interna</h1>
+    <main class="dashboard-shell">
+        <header class="topline">
+            <div class="brand">
+                <span class="brand-mark" aria-hidden="true">🔐</span>
+                <span>PROJETO APLICADO · SEGURANÇA DA INFORMAÇÃO</span>
+            </div>
+            <span class="status">Sessão autenticada</span>
+        </header>
 
-        <p>Autenticação realizada com sucesso.</p>
+        <section class="panel" aria-labelledby="page-title">
+            <h1 id="page-title">Área Interna</h1>
+            <p class="success-message">Sua sessão foi autenticada com sucesso e o acesso à área interna está liberado.</p>
 
-        <p>
-            Usuário autenticado:
-            <strong>{{ username }}</strong>
-        </p>
+            <div class="identity">
+                <div>
+                    <span class="identity-label">Usuário autenticado</span>
+                    <strong>{{ username }}</strong>
+                </div>
+                <span class="identity-icon" aria-hidden="true">✓</span>
+            </div>
 
-        <form method="POST" action="{{ url_for('logout') }}">
-            <button type="submit">Logout</button>
-        </form>
+            <form method="POST" action="{{ url_for('logout') }}">
+                <button type="submit">Sair</button>
+            </form>
+        </section>
     </main>
 </body>
 </html>
