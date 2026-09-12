@@ -1,0 +1,33 @@
+# Ambientes virtuais e cache Python
+venv/
+.venv/
+env/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Segredos e configurações locais
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+*.crt
+secrets/
+
+# Cookies, bancos locais e logs
+cookies.txt
+*.sqlite
+*.sqlite3
+*.db
+*.log
+app.log
+
+# Arquivos gerados por sistema e ferramentas
+.DS_Store
+Thumbs.db
+.vscode/

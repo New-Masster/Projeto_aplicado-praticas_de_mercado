@@ -1,0 +1,53 @@
+name: Deploy Seguro na Oracle Cloud
+
+on:
+  push:
+    branches:
+      - main # Dispara a pipeline automaticamente ao dar push na branch main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Obter o código do repositório
+        uses: actions/checkout@v4
+
+      - name: Enviar Arquivos do Projeto para a VM (via SCP Seguro)
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ secrets.OCI_VM_IP }}
+          username: ubuntu
+          key: ${{ secrets.OCI_SSH_KEY }}
+          port: 22
+          source: "app.py,requirements.txt,models/,templates/"
+          target: "/home/ubuntu/meu-projeto-mvc"
+
+      - name: Instalar Dependências e Iniciar Aplicação na VM (via SSH)
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.OCI_VM_IP }}
+          username: ubuntu
+          key: ${{ secrets.OCI_SSH_KEY }}
+          port: 22
+          script: |
+            # Garantir que o Python3-pip e venv estejam instalados no Ubuntu
+            sudo apt-get update -y
+            sudo apt-get install python3-pip python3-venv -y
+
+            # Acessar a pasta do projeto enviado
+            cd /home/ubuntu/meu-projeto-mvc
+
+            # Criar e ativar o ambiente virtual (venv) para isolamento de segurança
+            python3 -m venv venv
+            source venv/bin/activate
+
+            # Instalar/atualizar as dependências em modo isolado
+            pip install --upgrade pip
+            pip install -r requirements.txt
+
+            # Derrubar processos antigos que estejam escutando a porta do Flask (5000)
+            fuser -k 5000/tcp || true
+
+            # Iniciar a aplicação Flask segura em segundo plano
+            nohup venv/bin/python app.py > app.log 2>&1 &
