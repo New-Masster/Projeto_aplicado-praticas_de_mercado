@@ -140,6 +140,12 @@ Secrets utilizados: `APP_SECRET_KEY`, `APP_ADMIN_USERNAME`, `APP_ADMIN_PASSWORD_
 
 O arquivo [`.gitignore`](.gitignore) exclui ambientes virtuais, `.env`, chaves privadas, cookies, bancos locais, caches e logs. A auditoria do histórico não identificou chaves privadas, credenciais ou valores concretos dos secrets; foram encontradas apenas referências aos nomes dos GitHub Secrets utilizados pelo workflow.
 
+### 2FA da conta GitHub
+
+A evidência comprova a ativação da autenticação em dois fatores (2FA) na conta GitHub utilizada no projeto, atendendo ao requisito de segurança previsto no Eixo 2. A configuração utiliza o **Authenticator app** como método preferencial e possui o **GitHub Mobile** configurado como método adicional. Informações pessoais de contato foram ocultadas antes da publicação da evidência no repositório público.
+
+![Evidência de autenticação em dois fatores (2FA) do GitHub](evidencias/github-2fa.png)
+
 ## Execução local
 
 ### Pré-requisitos
@@ -179,7 +185,7 @@ As sugestões foram revisadas pelo responsável pelo projeto. Comandos, configur
 | Login, sessão, dashboard e logout | Comprovado |
 | OWASP A01, A02 e A04 | Comprovado |
 | Evidência de uso de IA/Antigravity ou ferramenta similar | Comprovado no uso do GitHub Copilot no VS Code |
-| 2FA do GitHub | Confirmar diretamente na conta |
+| 2FA do GitHub | Comprovado |
 
 ---
 
